@@ -1,0 +1,38 @@
+Scala - Skah lah
+
+Functional + Object oriented with static type system without much boiler plate code
+
+
+Why Scalable?
+Intertwining of functional and object oriented style into a uniform language design
+function value is an object
+function type is a class that can be inherited by subclasses
+
+Scala lets one add new types that can behave as native types
+We can design and implement abstractions in scala that address radical new domains yet feel like native features of scala
+
+Scala is purely object oriented
+Every value is an object and every operation is a method call
+
+
+Scala strings are implemented by Java String class
+
+Scala does not infer the types of function parameters though it can infer the result type except in the case of recursive function when the result type needs to be explicitly stated
+Scala does not assign generic types to function parameters when it is not able to infer types
+The block following the function declaration specifies expression(s) that result in a value
+The curly braces around the function body could be omitted if there is only one expression that constitutes the function body
+
+
+
+Not Clear Concepts:
+
+1) traits
+2) mixin composition
+3) Function literals = Anonymous Functions?
+4) Function as objects and Function types as classes
+5) Abstract type vs generic types
+
+
+
+- array elements are accessed using round brackets instead of square brackets
+- The first parameter to args is not the program name but the first command line argument to program
