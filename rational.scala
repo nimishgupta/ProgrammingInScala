@@ -3,6 +3,11 @@
  * Scala will automatically conjure up a primary constructor that takes these two parameters from the boilerplate 
  */
 class Rational (n : Int, d : Int) {
-  // This shall automatically go into primary constructor body
-  println ("Created " + n + "/" + d)
+  /* add a precondition that denominator is not 0 */
+  require (d != 0)
+
+  /* inherits the implmentation of toString defined in class java.lang.Object
+   * overriding with new impl
+   */
+  override def toString = n + "/" + d
 }

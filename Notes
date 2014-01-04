@@ -1,10 +1,11 @@
-Scala - Skah lah
+Scala - pronounced "Skah lah"
 
 Functional + Object oriented with static type system without much boiler plate code
 
 
 Why Scalable?
 Intertwining of functional and object oriented style into a uniform language design
+
 function value is an object
 function type is a class that can be inherited by subclasses
 
@@ -18,21 +19,120 @@ Every value is an object and every operation is a method call
 Scala strings are implemented by Java String class
 
 Scala does not infer the types of function parameters though it can infer the result type except in the case of recursive function when the result type needs to be explicitly stated
-Scala does not assign generic types to function parameters when it is not able to infer types
+Scala does not assign generic types to function parameters (no polymorphism?)
 The block following the function declaration specifies expression(s) that result in a value
 The curly braces around the function body could be omitted if there is only one expression that constitutes the function body
 
 
+- "vars" vs "vals"
+  "vars" are mutable whereas "vals" are immutable
 
-Not Clear Concepts:
+- Array elements are accessed using round brackets instead of square brackets
+  for example my_array(0), my_array(1) ...
+
+  val my_array = new Array[Strings /*type parameter */](3)
+  my_array(0) /* Gives access to first element of the array */
+
+  This is because an array is an object and round brackets imply a function call. For any object in scala if it is followed by a parenthesis then a special method called 'apply' is invoked on that object. Of course, the class has to define the 'apply' method for program to compile.
+
+  my_array(0) == my_array.apply (0)
+
+  Similarly, an assignment to a particular object involving parenthesis shall be converted to an 'update' method call on that object with the arguments in parenthesis along with the assigned value as the final arguments to the method
+
+  my_array(0) = "Hello" /* == my_array.update (0, "Hello") */
+
+- *Arrays are mutable objects* - We cannot change the length of array once initialized, but it is possible to change the contents of individual elements of the array
+  Immutable relative of Array is scala List
+
+- If an operator-method ends in a ':' then it is right associative (i.e it is applied to object on the right of it) otherwise it is left associative
+
+- tuples 
+    val pair = (1, "Hello") /* Tuple2[Int, String] */
+    Console println pair._1
+    Console println pair._2
+
+  Tuples currently limited to 22 members for now in version scala-2.9
+
+  It does not use implicit 'apply' method (pair(0)) because the apply method returns the same type of objects
+
+
+- The first parameter to args is not the program name but the first command line argument to program
+
+- 1 -> "Hello" <==> 1.->("Hello") <==> (1, "Hello")
+  "->" is a method with arity "2" that can be invoked on any pair of objects and returns a tuple as above
+
+
+CLASSES and OBJECTS
+--------------------
+
+- fields are also called instance variables
+- field can be made private using "private" access modifier
+- fields are "public" by default which is indicated by abscence of any access modifier
+- method parameters in a class method are "vals" (immutable)
+
+caveat: Whenever "=" before the body of function is omitted, its result type will definitely be Unit irrespective of the type of body (as scala can convert any type to Unit)
+def g () { "this String gets lost" }
+g: () Unit
+
+def h () = { "this string does not get lost" }
+h: () java.lang.String
+
+- Scala does not have static members instead it provides "Singleton" Objects (where all static members of that class can be gathered
+  o Defined using "object" keyword
+  o Methods can be called using <ClassName>.<Methodname> (<Args>)
+  o Singleton object is a first-class object
+  o Singleton objects cannot take parameters
+  o Singleton object is initialized the first time some code accesses it 
+  o Could be a "standalone" or a "companion" object
+  o A standalone object can be used to place utility functions and/or define entry point for applications
+  o Ex main for scala application
+      object Summer {
+        def main (args : Array[String]) { /* Required signature of main */
+          ...
+        }
+      }
+
+    Alternatively "Application" trait can be used which brings in a boilerplate main at the expense of access to command line arguments, threading and optimization.
+
+- "Companionship"
+  o When a singleton object shares the same name with a class, it is called that class's "companion object" and the class is called "companion class" of that object
+  o Both the class and companion object should reside in same source file for it to get successfully compiled
+  o A class and its companion object can both access each other's private members (akin to C++ friend class)
+
+
+Scala implicitly imports members of package java.lang and scala and members of a singleton object named Predef into every scala source file (prinln is actually Predef.println which in turn calls Console.println. Similarly assert is Predef.assert)
+
+- All operators are methods in Scala. Any method can be used in operator notation
+
+- scala can delay the evaluation of arguments or completely decline to evaluate them. This is how short circuiting of boolean operators (methods) is achieved in scala
+
+- "==" operator checks for value equality
+- "eq" or "ne" can be used to compare for reference equality of native java objects 
+- scala decides operator precedence based on the first character of the methods used in operator notation apart from its usual operator precedence table
+- No matter what associativity an operator has its operands are always evaluated left to right.
+  a ::: b <=> val x = a; b.::: (x)
+
+
+
+Unclear Concepts:
 
 1) traits
 2) mixin composition
 3) Function literals = Anonymous Functions?
 4) Function as objects and Function types as classes
 5) Abstract type vs generic types
+6) companion object
+7) factory method
+8) no accumulator value in reduceLeft??
+9) Singleton Objects
+10) Synthetic class
+11) Symbols
+12) What is the criteria for an immutable object. Is there a thing called immutable class?
+       Class having only "val" fields??
 
+    var a = new SomeImmutableClass (...)
+    should 'a' be called a mutable object or an immutable object?
 
+    val b = new SomeMutableClass (...)
+    should 'b' be called a mutable object or an immutable object?
 
-- array elements are accessed using round brackets instead of square brackets
-- The first parameter to args is not the program name but the first command line argument to program
