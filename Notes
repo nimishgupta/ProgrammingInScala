@@ -112,6 +112,20 @@ Scala implicitly imports members of package java.lang and scala and members of a
 - No matter what associativity an operator has its operands are always evaluated left to right.
   a ::: b <=> val x = a; b.::: (x)
 
+- There is "this" keyword that references self
+
+Auxiliary Constructors
+----------------------
+- It is possible for a class in scala to have multiple constructors, any constructor other than primary constructor is called an auxiliary constructor
+- Every auxiliary constructor must invoke another constructor of the same class as its first action ( "this (...)" ). The invoked constructor is either the primary constructor or any other auxiliary constructor that textually comes before the current auxiliary constructor. Inevitably, the primary constructor will be called, there is no escaping that as it is the single point of entry of a class. Any superclass constructor can only be called by a primary constructor
+
+
+- Scala compiler internally mangles operator identifiers to turn them into valid Java identifiers. For ex ":->" mangles to "$colon$minus$greater". The mangled form can be used to access this identifier from Java
+
+Mixed identifier - Alphanumeric id followed by "_" (underscore) and an operator identifier. Ex "unary_+" used as a method name defines a unary + method. "myvar_=" used as method name defines an assignment operator.
+
+- It is mandatory to assign return type to recursive methods and overloaded functions when they call their other counterparts otherwise scala gives a compile error
+
 
 
 Unclear Concepts:
