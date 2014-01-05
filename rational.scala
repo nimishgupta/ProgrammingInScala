@@ -33,52 +33,52 @@ class Rational (n : Int, d : Int) {
   def + (that: Rational) : Rational = 
     new Rational (numer * that.denom + that.numer * denom, denom * that.denom)
 
-  /* operator overloading, return type required */
-  def + (numer: Int) : Rational =
-    this + new Rational (numer)
-
-
-
   //////////////// Subtract //////////////////////
   def - (that: Rational) =
     new Rational (numer * that.denom - that.numer * denom, denom * that.denom)
-
-  /* operator overloading, return type required */
-  def - (numer: Int) : Rational =
-    this - new Rational (numer)
-
-
 
   ////////////////// Multiply //////////////////
   def * (that: Rational) =
     new Rational (numer * that.numer, denom * that.denom)
 
-  /* Operator overloading */
-  def * (numer: Int) =
-    /* this * new Rational (numer) */
-    new Rational (this.numer * numer, this.denom);
-
-
-
   /////////////////// Divide //////////////////
   def / (that: Rational) =
     this * new Rational (that.denom, that.numer)
-
-  /* operator overloading, return type required */
-  def / (numer: Int) : Rational =
-    this * new Rational (1, numer)
-
 
   ///////////////// Comparator ////////////////////
   def < (that: Rational) =
     this.numer * that.denom < this.denom * that.numer
 
-  /* Operator overloading, need a return type */
+  def max (that: Rational) =
+    if (this < that) that else this
+
+
+  /* Dead overloaded methods due to below implicit type coersion function
+
+  // operator overloading, return type required
+  def + (numer: Int) : Rational =
+    this + new Rational (numer)
+
+  // operator overloading, return type required
+  def - (numer: Int) : Rational =
+    this - new Rational (numer)
+
+  // Operator overloading, return type *NOT* mandatory because it does not call any of its counterpart
+  def * (numer: Int) =
+    // this * new Rational (numer)
+    new Rational (this.numer * numer, this.denom);
+
+  // operator overloading, return type required
+  def / (numer: Int) : Rational =
+    this * new Rational (1, numer)
+
+  // Operator overloading, need a return type
   def < (numer: Int): Boolean =
     this < new Rational (numer)
 
-
-
-  def max (that: Rational) =
-    if (this < that) that else this
+  */
 }
+
+
+/* outside of class to keep it in scope */
+implicit def IntToRational (numer: Int) = new Rational (numer)
