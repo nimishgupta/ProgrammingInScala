@@ -9,4 +9,4 @@ for (i <- a to 10) Console print i
 
 
 val arr = new Array[String](3)
-arr(0) = "Hello" /* == arr.update (0, Hello)
+arr(0) = "Hello" /* == arr.update (0, Hello) */

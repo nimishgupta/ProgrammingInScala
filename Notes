@@ -58,7 +58,7 @@ The curly braces around the function body could be omitted if there is only one 
 
 - The first parameter to args is not the program name but the first command line argument to program
 
-- 1 -> "Hello" <==> 1.->("Hello") <==> (1, "Hello")
+- '1 -> "Hello"' <=> '1.->("Hello")' <=> '(1, "Hello")'
   "->" is a method with arity "2" that can be invoked on any pair of objects and returns a tuple as above
 
 
@@ -126,13 +126,52 @@ Mixed identifier - Alphanumeric id followed by "_" (underscore) and an operator 
 
 - It is mandatory to assign return type to recursive methods and overloaded functions when they call their other counterparts otherwise scala gives a compile error
 
+- Scala assignment results in a Unit Value
+
+- for (item <- items [if <cond>]) // Conditional iteration through elements of collection, the expression inside for is called generator, produces a result
+- A for can contain multiple filters (if) for a single generator as well as multiple generators
+- for can have midstream assignments that can be used in body and yield statements that add element to result collection
+  Syntax: for <clauses> yield body 
+  body could comprise of multiple statements
+
+- try-catch-finally, A value, if any computed in finally clause is dropped in scala
+
+- same variable names can be used in different scope with variables in inner scope shadowing variables in outer scope
+
+- anonymous functions are called function literals which are compiled into function values
+  Syntax : (x: Int) => x + 1
+           var increase = (x: Int) => x + 1
+
+- Placeholder syntax  (fill in the blanks)
+    var increase = (_: Int) + 1
+    val f = (_: Int) + (_: Int) (Position matters, the first "_" is for the first parameter and second "_" for the second
+
+- To create a partially applied function with all parameters missing, do the following
+    def sum (x: Int, y: Int, z: Int): Int = x + y + z
+    val partial_sum = sum _
+
+  This method can be used to wrap methods and nested functions in function value and pass them around
+
+- Repeated parameters
+  def echo (args : String*) = for (arg <- args) println (arg)
+  accepts 1 or more number of String variables (implemented as array though it does not directly accept an array)
+
+- Scala only optimizes direct recursive tail calls (no mutual recursion)
+
+
+Object Oriented Programming
+---------------------------
+
+- Abstract class : tells that the class *MAY* have abstract members that do not have any implementation upfront
+- In scala a field can override a method and it is an error to define a field and a method with same name
+- "final" method : method cannot be "override"den by subclasses anymore
+- "final" class : class cannot be subclassed anymore
 
 
 Unclear Concepts:
 
 1) traits
 2) mixin composition
-3) Function literals = Anonymous Functions?
 4) Function as objects and Function types as classes
 5) Abstract type vs generic types
 6) companion object
@@ -149,4 +188,5 @@ Unclear Concepts:
 
     val b = new SomeMutableClass (...)
     should 'b' be called a mutable object or an immutable object?
-
+13) Generator
+14) Combinators
