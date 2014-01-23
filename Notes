@@ -134,7 +134,7 @@ Mixed identifier - Alphanumeric id followed by "_" (underscore) and an operator 
   Syntax: for <clauses> yield body 
   body could comprise of multiple statements
 
-- try-catch-finally, A value, if any computed in finally clause is dropped in scala
+- try-catch-finally, A value, if any, computed in finally clause is dropped in scala
 
 - same variable names can be used in different scope with variables in inner scope shadowing variables in outer scope
 
@@ -167,11 +167,49 @@ Object Oriented Programming
 - "final" method : method cannot be "override"den by subclasses anymore
 - "final" class : class cannot be subclassed anymore
 
+Traits
+------
+
+- Widens thin interfaces to rich ones
+- stackable modifications
+
+Pattern Matching
+
+- A simple case starting with lowercase is taken to be a pattern variable, all other references are taken to be constants
+- Matching 'list' of arbitrary length
+    expr match {
+      case List (0, _*) =>
+      case _ =>
+    }
+- The patterns could be typed
+    def some_lenght (x: Any) : Int = x match {
+        case s: String => s.length
+        case m: Map[_, _] => m.size
+        case _ => -1
+      }
+  Alternate if (x.isInstanceOf [String]) x.asInstanceOf[String].length
+
+- Any container loses its type information on account of type erasure. Java generics loose their type information on run-time. A map of int to int is the same as a map from int to string.
+- The exception to type erasure rule is Array. It is treated differently and maintains its type even at runtime
+
+Sealed class
+ - Adding sealed keyword to an abstract class limits the case classes to be declared in the same source file. This leads to enhanced compiler support as it can flag missing patterns while matching. Otherwise the client is free to define a case class of a super class anywhere and anytime in a project and forego compiler support for flagging missing cases.
+
+
+Lists
+
+- Immutable, recursive
+- Lists are "covariant". If S and T are two types and S is a subtype of T then List[S] is a subtype of List[T]
+- Nil has type List[Nothing], which is again "covariant" as Nothing is a subtype of every type
+
+- When we do a pattern match on infix operator like "::" it translates to x :: xs <=> :: (x, xs) where "::" is a class and this is its constructor
+
+First order method : A method that does not any function as an argument
+        
+
 
 Unclear Concepts:
 
-1) traits
-2) mixin composition
 4) Function as objects and Function types as classes
 5) Abstract type vs generic types
 6) companion object
@@ -190,3 +228,4 @@ Unclear Concepts:
     should 'b' be called a mutable object or an immutable object?
 13) Generator
 14) Combinators
+15) Annotations

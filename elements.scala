@@ -14,7 +14,6 @@ abstract class Element {
   def height: Int = contents.length
   def width: Int = if (contents.length == 0) 0 else contents(0).length
 
-  /* XXX : How is forward referencing being used here */
   def above (that: Element): Element = {
     val this1 = this widen that.width
     val that1 = that widen this.width
@@ -88,14 +87,14 @@ object Element {
    */
   class LineElement (s: String) extends Element {
     val contents = Array(s)
-      override def width = s.length
-      override def height = 1
+    override def width = s.length
+    override def height = 1
   }
 
 
   class UniformElement(ch: Char,
-      override val width: Int,
-      override val height: Int) extends Element {
+    override val width: Int,
+    override val height: Int) extends Element {
     private val line = ch.toString * width
       def contents = Array.fill (height)(line)
   }
