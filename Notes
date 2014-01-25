@@ -205,6 +205,36 @@ Lists
 - When we do a pattern match on infix operator like "::" it translates to x :: xs <=> :: (x, xs) where "::" is a class and this is its constructor
 
 First order method : A method that does not any function as an argument
+
+
+Scala type inference is local, flow based. The problem of not able to infer types properly at times is not present in global Hindley-Milner style
+
+List buffers : mutable lists with constant time append (+=) and prepend (+=:) operations
+Array buffer : Array in which one can potentially add or delete elements from beginning or end of sequence
+
+Private Constructors : class Queue[T] private (private val leading: List[T], private val trailing: List[T])
+                       The private keyword between class name and its paramters suggests that the constructor of the class is private
+
+
+Variance and Variance Annotations
+----------------------------------
+Generic types by default have a nonvariant (or rigid) subtyping. If Queue[T] is a generic then Queue[String] is not a subtype of Queue[Any] (even though String is a subtype of Any) by default. If Queue[String] is a subtype of Queue[Any] then it is called covariance. To enable this while declaring Queue generic we need to say Queue[+T]
+Prefixing a formal type paramter with + indicates that subtyping is covariant
+There is also a contravariant subtyping indicated by a prefix of "-" on type parameter (Queue[-T]), which says that if T is a subtype of S then Queue[S] is a subtype of Queue[T]
+
+- Arrays are covariant in Java but not in scala (throws an ArrayStore exception if an invalid operation (maybe assign) is done assuming covariant types)
+
+Lower bounds
+def enqueue[U >: T] (x: U) = new Queue[U] (leading, x :: trailing)
+
+T is lower bound on U, hence U is a supertype of T.
+
+Upper bounds
+[T <: Ordered[T]], type parameter T has an upper bound 'Ordered'
+
+Liskov Substitution principle :- A type S can be substituted in place of T if S is a subtype of T that is it provides the same functionality as that of T and possibly more.
+
+- Function argument types are declared to be contravariant and function return types are declared to be covariant
         
 
 
@@ -229,3 +259,8 @@ Unclear Concepts:
 13) Generator
 14) Combinators
 15) Annotations
+16) Hash tries
+17) When do we use a trait over an abstract class (Trait with only abstract members translate to Java interfaces)
+18) Checks for covarance, contravariance and nonvariance correctness. How is it done is not clear?
+19) Definition-site variance declaration vs use-site variance declaration
+20) Lower bound and Upper bound type specifications
