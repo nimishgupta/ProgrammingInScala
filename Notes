@@ -235,6 +235,50 @@ Upper bounds
 Liskov Substitution principle :- A type S can be substituted in place of T if S is a subtype of T that is it provides the same functionality as that of T and possibly more.
 
 - Function argument types are declared to be contravariant and function return types are declared to be covariant
+
+
+Abstract Members
+----------------
+
+- four kinds
+  o vals
+  o vars
+  o methods
+  o types
+
+  Ex of all 4 kinds of abstract members
+
+  trait Abstract {
+    type T
+    def transform (x: T): T
+    val initial: T
+    var current: T
+  }
+
+  // example implementation that provides these definitions
+  class Concrete extends Abstract {
+    type T = String
+    def transform (x: String): String = x + x
+    val initial = "hi"
+    var current = initial
+  }
+
+  An abstract val resembles parameterless method but since a paramterless method can return different values opon subsequent invocation but a val cannot, an abstract val
+  cannot be reimplemented using a parameterless method but a parameterless abstract method can be implemented using a val.
+
+  Initialization order is not the same for class parameters and abstract fields. A class parameter argument is evaluated before it is passed to the class constructor
+  (unless the parameter is by-name). An implementing val definition in a subclass, by contrast, is evaluated only after the superclass has been initialized.
+
+  Pre-initialized fields and lazy vals
+  ------------------------------------
+  Pre-initialized fields let you initialize fields of a subclass before superclass is called. (Place the field definition in braces before the superclass constructor call)
+  Pre-initialized field's this refers to subclass instead of super because the super is not instantiated yet.
+
+  Val definitions can also be made lazy. If a val definition is pre-fixed with a lazy modifier, the initializing expression on the right-hand side will only be
+  evaluated the first time the val is used.
+  This is similar as if a val is def'd but unlike a method, a lazy val is evaluated only once (upon its very first use)
+  
+  Objects in scala can have types as members and such types are called path dependent types
         
 
 
@@ -264,3 +308,4 @@ Unclear Concepts:
 18) Checks for covarance, contravariance and nonvariance correctness. How is it done is not clear?
 19) Definition-site variance declaration vs use-site variance declaration
 20) Lower bound and Upper bound type specifications
+21) By-name class parameters
