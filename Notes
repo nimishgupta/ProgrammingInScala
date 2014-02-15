@@ -1,11 +1,24 @@
 Scala - pronounced "Skah lah"
 
-Functional + Object oriented with static type system without much boiler plate code
+Functional + Object oriented with static type system without requiring much boiler plate code on programmers part
 
 
 Why Scalable?
-Intertwining of functional and object oriented style into a uniform language design
+- Intertwining of functional and object oriented style into a uniform language design
+- Same techniques and patterns are used for writing programs of any size
 
+
+Trivia
+
+- "vars" are mutable whereas "vals" are immutable
+- Scala strings are implemented by Java String class
+- Arrays are mutable in the sense that the elements
+  if the array could be modified but changing the
+  length of array will involve copying and and then
+  changing
+
+
+/* Not clear */
 function value is an object
 function type is a class that can be inherited by subclasses
 
@@ -15,17 +28,13 @@ We can design and implement abstractions in scala that address radical new domai
 Scala is purely object oriented
 Every value is an object and every operation is a method call
 
-
-Scala strings are implemented by Java String class
-
 Scala does not infer the types of function parameters though it can infer the result type except in the case of recursive function when the result type needs to be explicitly stated
 Scala does not assign generic types to function parameters (no polymorphism?)
 The block following the function declaration specifies expression(s) that result in a value
 The curly braces around the function body could be omitted if there is only one expression that constitutes the function body
+-------------------------------------------------------------------------------
 
-
-- "vars" vs "vals"
-  "vars" are mutable whereas "vals" are immutable
+Arrays
 
 - Array elements are accessed using round brackets instead of square brackets
   for example my_array(0), my_array(1) ...
@@ -33,15 +42,24 @@ The curly braces around the function body could be omitted if there is only one 
   val my_array = new Array[Strings /*type parameter */](3)
   my_array(0) /* Gives access to first element of the array */
 
-  This is because an array is an object and round brackets imply a function call. For any object in scala if it is followed by a parenthesis then a special method called 'apply' is invoked on that object. Of course, the class has to define the 'apply' method for program to compile.
+  This is because an array is an object and round brackets imply a function call. 
+  For any object in scala if it is followed by a parenthesis then a special
+  method called 'apply' is invoked on that object. Of course, the class has to
+  define the 'apply' method for program to compile.
 
-  my_array(0) == my_array.apply (0)
+  my_array(0) <=> my_array.apply (0)
 
-  Similarly, an assignment to a particular object involving parenthesis shall be converted to an 'update' method call on that object with the arguments in parenthesis along with the assigned value as the final arguments to the method
+
+  Similarly, an assignment to a particular object involving parenthesis shall be
+  converted to an 'update' method call on that object with the arguments in
+  parenthesis along with the assigned value as the final arguments to the method
 
   my_array(0) = "Hello" /* == my_array.update (0, "Hello") */
 
-- *Arrays are mutable objects* - We cannot change the length of array once initialized, but it is possible to change the contents of individual elements of the array
+- *Arrays are mutable objects* - We cannot change the length of array once
+  initialized, but it is possible to change the contents of individual elements
+  of the array
+
   Immutable relative of Array is scala List
 
 - If an operator-method ends in a ':' then it is right associative (i.e it is applied to object on the right of it) otherwise it is left associative
@@ -126,7 +144,7 @@ Mixed identifier - Alphanumeric id followed by "_" (underscore) and an operator 
 
 - It is mandatory to assign return type to recursive methods and overloaded functions when they call their other counterparts otherwise scala gives a compile error
 
-- Scala assignment results in a Unit Value
+- Scala assignment results in a Unit Value (Can we do this "x = y = z"?)
 
 - for (item <- items [if <cond>]) // Conditional iteration through elements of collection, the expression inside for is called generator, produces a result
 - A for can contain multiple filters (if) for a single generator as well as multiple generators
@@ -187,7 +205,7 @@ Pattern Matching
         case m: Map[_, _] => m.size
         case _ => -1
       }
-  Alternate if (x.isInstanceOf [String]) x.asInstanceOf[String].length
+  Alternate to above pattern match: "if (x.isInstanceOf [String]) x.asInstanceOf[String].length"
 
 - Any container loses its type information on account of type erasure. Java generics loose their type information on run-time. A map of int to int is the same as a map from int to string.
 - The exception to type erasure rule is Array. It is treated differently and maintains its type even at runtime
@@ -279,20 +297,57 @@ Abstract Members
   This is similar as if a val is def'd but unlike a method, a lazy val is evaluated only once (upon its very first use)
   
   Objects in scala can have types as members and such types are called path dependent types
+
+
+
+Implicit conversions
+--------------------
+
+Whenever compiler sees a type error, it checks for (in scope) implicit conversions to see if the error could be alleviated using it.
+
+- reduces multiple uses of explicit conversions (making code more readable)
+
+- Rules for implicit conversion
+  o Only definitions marked "implicit" are available (and not pick each and every random definition)
+  o An implicit conversion should be available in the current environment through a single identifier or be associated with source or target type of the conversion
+    (Compiler will also look for implicit conversions in the explicit and implicit types of source or target types)
+  o Only one implicit at a time. (No cascading)
+  o When code type checks without using implicits, then no implicit conversion is attempted
+
+- Where are implicits applicable
+  o Conversions to an expected type
+    Compiler needs type X but has type Y then it looks for "implicit" conversion from X -> Y
+
+  o Converting the receiver
+    Implicit conversions also apply to reciever of method calls. If compiler has [X].method1, where method1 is not applicable to objects of type X but only on objects of type Y then it will automatically look for an implicit conversion between X -> Y
+
+  o Implicit parameters
+    Compiler may add a implicit parameter to a method call if it sees that an argument previously declared implicit during method declaration is missing and an implicit value is available that could take its place. But this is a little tricky, the common adivce is to werap regular types in new types to keep the compiler from confusing among available options.
+
+
+- View bounds ( <% ) vs upper bounds ( <: ) . View bounds will work when an implicit conversion between types is available but upper bound will not.
+
+- When multiple conversions apply, the most strict one is favored against a general one.
+
+
+
+
+    
+
+
         
 
 
 Unclear Concepts:
 
-4) Function as objects and Function types as classes
-5) Abstract type vs generic types
-6) companion object
-7) factory method
-8) no accumulator value in reduceLeft??
-9) Singleton Objects
-10) Synthetic class
-11) Symbols
-12) What is the criteria for an immutable object. Is there a thing called immutable class?
+1) Function as objects and Function types as classes
+2) Abstract type vs generic types
+3) factory method
+4) no accumulator value in reduceLeft??
+5) Singleton Objects
+6) Synthetic class
+7) Symbols
+8) What is the criteria for an immutable object. Is there a thing called immutable class?
        Class having only "val" fields??
 
     var a = new SomeImmutableClass (...)
@@ -300,12 +355,13 @@ Unclear Concepts:
 
     val b = new SomeMutableClass (...)
     should 'b' be called a mutable object or an immutable object?
-13) Generator
-14) Combinators
-15) Annotations
-16) Hash tries
-17) When do we use a trait over an abstract class (Trait with only abstract members translate to Java interfaces)
-18) Checks for covarance, contravariance and nonvariance correctness. How is it done is not clear?
-19) Definition-site variance declaration vs use-site variance declaration
-20) Lower bound and Upper bound type specifications
-21) By-name class parameters
+9) Generator
+10) Combinators
+11) Annotations
+12) Hash tries
+13) When do we use a trait over an abstract class (Trait with only abstract members translate to Java interfaces)
+14) Checks for covariance, contravariance and nonvariance correctness. How is it done is not clear?
+15) Definition-site variance declaration vs use-site variance declaration
+16) Lower bound and Upper bound type specifications
+17) By-name class parameters
+18) Type erasure
